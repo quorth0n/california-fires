@@ -1,0 +1,47 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "check for fires",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "SubscribeIntent",
+          "slots": [],
+          "samples": ["check for fires"]
+        },
+        {
+          "name": "LocalFiresIntent",
+          "slots": [],
+          "samples": [
+            "get local fires",
+            "check for local fires",
+            "check for fires in my area",
+            "get fires in my area"
+          ]
+        },
+        {
+          "name": "AllFiresIntent",
+          "slots": [],
+          "samples": [
+            "get all fires",
+            "check for all fires",
+            "get fires in california",
+            "get fires in the state"
+          ]
+        }
+      ],
+      "types": []
+    }
+  }
+}

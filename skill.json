@@ -1,0 +1,34 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Alexa skill to tell you about fires in your area",
+          "examplePhrases": [
+            "check for fires",
+            "check for local fires",
+            "tell me about [fire name]"
+          ],
+          "name": "California Fires",
+          "description": "Alexa skill to tell you about fires in your area "
+        }
+      },
+      "isAvailableWorldwide": false,
+      "category": "WEATHER",
+      "distributionCountries": ["US"]
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/custom/build"
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "permissions": [
+      {
+        "name": "alexa:devices:all:address:country_and_postal_code:read"
+      }
+    ]
+  }
+}
