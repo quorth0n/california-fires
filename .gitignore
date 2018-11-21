@@ -1,6 +1,9 @@
 # Probably not supposed to gitignore this directory but I think it's easy to autogen
 .ask/
 
+# Model  (to be scraped)
+models/en-US.json
+
 # Webpack
 build/
 

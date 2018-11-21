@@ -16,18 +16,14 @@
           "samples": []
         },
         {
-          "name": "SubscribeIntent",
-          "slots": [],
-          "samples": ["check for fires"]
-        },
-        {
           "name": "LocalFiresIntent",
           "slots": [],
           "samples": [
             "get local fires",
             "check for local fires",
             "check for fires in my area",
-            "get fires in my area"
+            "get fires in my area",
+            "is there a fire near me"
           ]
         },
         {
@@ -39,9 +35,105 @@
             "get fires in california",
             "get fires in the state"
           ]
+        },
+        {
+          "name": "SelectFireIntent",
+          "slots": [
+            {
+              "name": "Fire",
+              "type": "LIST_OF_FIRES"
+            }
+          ],
+          "samples": [
+            "tell me about {Fire}",
+            "get information about {Fire}",
+            "what is {Fire}",
+            "where is {Fire}"
+          ]
         }
       ],
-      "types": []
+      "types": [
+        {
+          "name": "LIST_OF_FIRES",
+          "values": [
+            {
+              "name": {
+                "value": "Camp Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Woolsey Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Bear Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Briggs Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Morgan Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Garner Complex"
+              }
+            },
+            {
+              "name": {
+                "value": "Niles Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Hill Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Branscombe Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Horn Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Rincon Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Peak Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Green Hill Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Brushy Fire"
+              }
+            },
+            {
+              "name": {
+                "value": "Georges Fire"
+              }
+            }
+          ]
+        }
+      ]
     }
   }
 }

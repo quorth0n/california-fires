@@ -12,6 +12,7 @@
     "ask-sdk-core": "^2.0.0",
     "ask-sdk-model": "^1.0.0",
     "axios": "^0.18.0",
+    "lodash": "^4.17.11",
     "rss-parser": "^3.5.3",
     "zipcodes": "^8.0.0"
   },

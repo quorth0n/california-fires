@@ -5,6 +5,7 @@ const Alexa = require('ask-sdk-core');
 const axios = require('axios');
 const zipcodes = require('zipcodes');
 const Parser = require('rss-parser');
+const _ = require('lodash');
 
 const getFireData = new Promise((resolve, reject) => {
   const parser = new Parser({
@@ -31,14 +32,14 @@ const LaunchRequestHandler = {
     return (
       handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
       (handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-        handlerInput.requestEnvelope.request.intent.name === 'SubscribeIntent')
+        handlerInput.requestEnvelope.request.intent.name === 'AllFiresIntent')
     );
   },
   async handle(handlerInput) {
     let speechText = 'The following fires are ongoing: ';
 
     const data = await getFireData;
-    data.forEach(fire => {
+    _.each(data, fire => {
       speechText += `${fire.title.substr(0, fire.title.indexOf(')') + 1)}\n`;
     });
 
@@ -50,20 +51,24 @@ const LaunchRequestHandler = {
   }
 };
 
-const AllFiresIntentHandler = {
+const SelectFireIntentHandler = {
   canHandle(handlerInput) {
     return (
       handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-      handlerInput.requestEnvelope.request.intent.name === 'AllFiresIntent'
+      handlerInput.requestEnvelope.request.intent.name === 'SelectFireIntent'
     );
   },
   async handle(handlerInput) {
-    let speechText = 'The following fires are ongoing: ';
-
     const data = await getFireData;
-    data.forEach(fire => {
-      speechText += `${fire.title.substr(0, fire.title.indexOf(')') + 1)}\n`;
-    });
+    const fire = _.find(data, fire =>
+      fire.title
+        .toLowerCase()
+        .includes(handlerInput.requestEnvelope.request.intent.slots.Fire.value)
+    );
+
+    const speechText = !!fire
+      ? `${fire.title}: ${fire.content}`
+      : `${handlerInput.requestEnvelope.request.intent.slots.Fire.value} could not be found`;
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -98,15 +103,32 @@ const LocalFiresIntentHandler = {
 
       const myZip = await response.data.postalCode;
       const data = await getFireData;
-      data.forEach(fire => {
-        const loc = zipcodes.lookupByCoords(fire.lat, fire.long);
-        if (loc) {
-          if (zipcodes.distance(loc.zip, myZip) <= 30) {
-            // Use '95965' for testing zip
-            speechText += `${fire.title}: ${fire.content}\n`;
+
+      const obj = [];
+      _(data)
+        .map(value => {
+          const loc = zipcodes.lookupByCoords(value.lat, value.long);
+          if (!!loc) {
+            const distance = zipcodes.distance(myZip, loc.zip);
+            return distance <= 30
+              ? obj.push({
+                  distance: distance,
+                  title: value.title,
+                  content: value.content.replace(/(\r\n\t|\n|\r\t)/gm, '')
+                })
+              : null;
           }
-        }
-      });
+        })
+        .value();
+
+      _(obj)
+        .sortBy(['distance'])
+        .each(fire => {
+          speechText +=
+            fire.distance !== null
+              ? `${fire.distance} miles away: ${fire.title}: ${fire.content}\n`
+              : '';
+        });
     } catch (err) {
       console.error(err);
       if (err.status === 403) {
@@ -200,7 +222,7 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchRequestHandler,
-    AllFiresIntentHandler,
+    SelectFireIntentHandler,
     LocalFiresIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
