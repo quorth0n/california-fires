@@ -7,7 +7,7 @@
           "examplePhrases": [
             "check for fires",
             "check for local fires",
-            "tell me about [fire name]"
+            "tell me about [county name]"
           ],
           "name": "California Fires",
           "description": "Alexa skill to tell you about fires in your area "

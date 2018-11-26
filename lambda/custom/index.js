@@ -22,7 +22,7 @@ const getFireData = new Promise((resolve, reject) => {
     if (err) {
       reject(err);
     } else {
-      resolve(feed.items);
+      resolve(_.filter(feed.items, fire => !!fire.content.trim()));
     }
   });
 });
@@ -30,17 +30,16 @@ const getFireData = new Promise((resolve, reject) => {
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
     return (
-      handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
-      (handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-        handlerInput.requestEnvelope.request.intent.name === 'AllFiresIntent')
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'AllFiresIntent'
     );
   },
   async handle(handlerInput) {
     let speechText = 'The following fires are ongoing: ';
 
     const data = await getFireData;
-    _.each(data, fire => {
-      speechText += `${fire.title.substr(0, fire.title.indexOf(')') + 1)}\n`;
+    _.each(data, (fire, index) => {
+      speechText += `Fire #${index + 1}: ${fire.title.substr(0, fire.title.indexOf(')') + 1)}\n`;
     });
 
     return handlerInput.responseBuilder
@@ -51,24 +50,51 @@ const LaunchRequestHandler = {
   }
 };
 
-const SelectFireIntentHandler = {
+const CountyFireIntentHandler = {
   canHandle(handlerInput) {
     return (
       handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-      handlerInput.requestEnvelope.request.intent.name === 'SelectFireIntent'
+      handlerInput.requestEnvelope.request.intent.name === 'CountyFireIntent'
     );
   },
   async handle(handlerInput) {
     const data = await getFireData;
-    const fire = _.find(data, fire =>
-      fire.title
+    const fire = _.find(data, fireData =>
+      fireData.title
         .toLowerCase()
-        .includes(handlerInput.requestEnvelope.request.intent.slots.Fire.value)
+        .includes(handlerInput.requestEnvelope.request.intent.slots.County.value)
     );
 
     const speechText = !!fire
-      ? `${fire.title}: ${fire.content}`
-      : `${handlerInput.requestEnvelope.request.intent.slots.Fire.value} could not be found`;
+      ? `${fire.title}: ${fire.content.replace(/(\r\n|\n|\r)/gm, ' ')}`
+      : `No fires in ${handlerInput.requestEnvelope.request.intent.slots.County.value}`;
+
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .reprompt(speechText)
+      .withSimpleCard('California Fires', speechText)
+      .getResponse();
+  }
+};
+
+const IndexFireIntentHandler = {
+  canHandle(handlerInput) {
+    return (
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'IndexFireIntent'
+    );
+  },
+  async handle(handlerInput) {
+    const data = await getFireData;
+    const fire = data[handlerInput.requestEnvelope.request.intent.slots.Index.value - 1];
+
+    const speechText = !!fire
+      ? `Fire #${handlerInput.requestEnvelope.request.intent.slots.Index.value}: ${
+          fire.title
+        }: ${fire.content.replace(/(\r\n|\n|\r)/gm, ' ')}`
+      : `Fire number ${
+          handlerInput.requestEnvelope.request.intent.slots.Index.value
+        } does not exist`;
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -81,8 +107,9 @@ const SelectFireIntentHandler = {
 const LocalFiresIntentHandler = {
   canHandle(handlerInput) {
     return (
-      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-      handlerInput.requestEnvelope.request.intent.name === 'LocalFiresIntent'
+      handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
+      (handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+        handlerInput.requestEnvelope.request.intent.name === 'LocalFiresIntent')
     );
   },
   async handle(handlerInput) {
@@ -104,24 +131,22 @@ const LocalFiresIntentHandler = {
       const myZip = await response.data.postalCode;
       const data = await getFireData;
 
-      const obj = [];
       _(data)
         .map(value => {
           const loc = zipcodes.lookupByCoords(value.lat, value.long);
-          if (!!loc) {
+          if (loc !== null) {
             const distance = zipcodes.distance(myZip, loc.zip);
-            return distance <= 30
-              ? obj.push({
-                  distance: distance,
-                  title: value.title,
-                  content: value.content.replace(/(\r\n\t|\n|\r\t)/gm, '')
-                })
-              : null;
+            if (distance <= 30) {
+              return {
+                distance,
+                title: value.title,
+                content: value.content.replace(/(\r\n|\n|\r)/gm, ' ')
+              };
+            }
           }
+          return null;
         })
-        .value();
-
-      _(obj)
+        .without(null)
         .sortBy(['distance'])
         .each(fire => {
           speechText +=
@@ -141,6 +166,8 @@ const LocalFiresIntentHandler = {
     speechText = speechText
       ? `The following fires are within 30 miles of you: ${speechText}`
       : 'There are no fires within 30 miles of you.';
+
+    speechText += ' Say "get all fires" to return a list of all fires, or "help" for more commands';
 
     const response = handlerInput.responseBuilder.speak(speechText).reprompt(speechText);
     return needsPerms
@@ -222,7 +249,8 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchRequestHandler,
-    SelectFireIntentHandler,
+    CountyFireIntentHandler,
+    IndexFireIntentHandler,
     LocalFiresIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,

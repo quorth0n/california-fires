@@ -1,0 +1,367 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "check for fires",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "LocalFiresIntent",
+          "slots": [],
+          "samples": [
+            "get local fires",
+            "check for local fires",
+            "check for fires in my area",
+            "get fires in my area",
+            "is there a fire near me"
+          ]
+        },
+        {
+          "name": "AllFiresIntent",
+          "slots": [],
+          "samples": [
+            "get all fires",
+            "check for all fires",
+            "get fires in california",
+            "get fires in the state"
+          ]
+        },
+        {
+          "name": "CountyFireIntent",
+          "slots": [
+            {
+              "name": "County",
+              "type": "LIST_OF_COUNTIES"
+            }
+          ],
+          "samples": [
+            "get fires in {County}",
+            "tell me about {County}",
+            "get information about {County}"
+          ]
+        },
+        {
+          "name": "IndexFireIntent",
+          "slots": [
+            {
+              "name": "Index",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "get fire number {Index}",
+            "tell me about fire number {Index}",
+            "get information about fire number {Index}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "LIST_OF_COUNTIES",
+          "values": [
+            {
+              "name": {
+                "value": "Alameda"
+              }
+            },
+            {
+              "name": {
+                "value": "Alpine"
+              }
+            },
+            {
+              "name": {
+                "value": "Amador"
+              }
+            },
+            {
+              "name": {
+                "value": "Butte"
+              }
+            },
+            {
+              "name": {
+                "value": "Calaveras"
+              }
+            },
+            {
+              "name": {
+                "value": "Colusa"
+              }
+            },
+            {
+              "name": {
+                "value": "Contra Costa"
+              }
+            },
+            {
+              "name": {
+                "value": "Del Norte"
+              }
+            },
+            {
+              "name": {
+                "value": "El Dorado"
+              }
+            },
+            {
+              "name": {
+                "value": "Fresno"
+              }
+            },
+            {
+              "name": {
+                "value": "Glenn"
+              }
+            },
+            {
+              "name": {
+                "value": "Humboldt"
+              }
+            },
+            {
+              "name": {
+                "value": "Imperial"
+              }
+            },
+            {
+              "name": {
+                "value": "Inyo"
+              }
+            },
+            {
+              "name": {
+                "value": "Kern"
+              }
+            },
+            {
+              "name": {
+                "value": "Kings"
+              }
+            },
+            {
+              "name": {
+                "value": "Lake"
+              }
+            },
+            {
+              "name": {
+                "value": "Lassen"
+              }
+            },
+            {
+              "name": {
+                "value": "Los Angeles"
+              }
+            },
+            {
+              "name": {
+                "value": "Madera"
+              }
+            },
+            {
+              "name": {
+                "value": "Marin"
+              }
+            },
+            {
+              "name": {
+                "value": "Mariposa"
+              }
+            },
+            {
+              "name": {
+                "value": "Mendocino"
+              }
+            },
+            {
+              "name": {
+                "value": "Merced"
+              }
+            },
+            {
+              "name": {
+                "value": "Modoc"
+              }
+            },
+            {
+              "name": {
+                "value": "Mono"
+              }
+            },
+            {
+              "name": {
+                "value": "Monterey"
+              }
+            },
+            {
+              "name": {
+                "value": "Napa"
+              }
+            },
+            {
+              "name": {
+                "value": "Nevada"
+              }
+            },
+            {
+              "name": {
+                "value": "Orange"
+              }
+            },
+            {
+              "name": {
+                "value": "Placer"
+              }
+            },
+            {
+              "name": {
+                "value": "Plumas"
+              }
+            },
+            {
+              "name": {
+                "value": "Riverside"
+              }
+            },
+            {
+              "name": {
+                "value": "Sacramento"
+              }
+            },
+            {
+              "name": {
+                "value": "San Benito"
+              }
+            },
+            {
+              "name": {
+                "value": "San Bernardino"
+              }
+            },
+            {
+              "name": {
+                "value": "San Diego"
+              }
+            },
+            {
+              "name": {
+                "value": "San Francisco"
+              }
+            },
+            {
+              "name": {
+                "value": "San Joaquin"
+              }
+            },
+            {
+              "name": {
+                "value": "San Luis Obispo"
+              }
+            },
+            {
+              "name": {
+                "value": "San Mateo"
+              }
+            },
+            {
+              "name": {
+                "value": "Santa Barbara"
+              }
+            },
+            {
+              "name": {
+                "value": "Santa Clara"
+              }
+            },
+            {
+              "name": {
+                "value": "Santa Cruz"
+              }
+            },
+            {
+              "name": {
+                "value": "Shasta"
+              }
+            },
+            {
+              "name": {
+                "value": "Sierra"
+              }
+            },
+            {
+              "name": {
+                "value": "Siskiyou"
+              }
+            },
+            {
+              "name": {
+                "value": "Solano"
+              }
+            },
+            {
+              "name": {
+                "value": "Sonoma"
+              }
+            },
+            {
+              "name": {
+                "value": "Stanislaus"
+              }
+            },
+            {
+              "name": {
+                "value": "Sutter"
+              }
+            },
+            {
+              "name": {
+                "value": "Tehama"
+              }
+            },
+            {
+              "name": {
+                "value": "Trinity"
+              }
+            },
+            {
+              "name": {
+                "value": "Tulare"
+              }
+            },
+            {
+              "name": {
+                "value": "Tuolumne"
+              }
+            },
+            {
+              "name": {
+                "value": "Ventura"
+              }
+            },
+            {
+              "name": {
+                "value": "Yolo"
+              }
+            },
+            {
+              "name": {
+                "value": "Yuba"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

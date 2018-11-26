@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "Alexa skill to detect fires close to you",
   "scripts": {
-    "build-lambda": "node_modules/.bin/webpack-cli",
-    "build-model": "node scrapeFires.js",
-    "build": "npm run build-lambda && npm run build-model",
-    "deploy-lambda": "npm run build-lambda && ask deploy -t lambda",
-    "deploy-model": "npm run build-model && ask deploy -t model",
+    "build": "node_modules/.bin/webpack-cli",
+    "deploy-lambda": "npm run build && ask deploy -t lambda",
     "deploy": "npm run build && ask deploy"
   },
   "author": "whirish <lpoflynn@protonmail.ch>",
@@ -21,7 +18,6 @@
     "prettier": "^1.15.2"
   },
   "dependencies": {
-    "rss-parser": "^3.5.4",
     "webpack": "^4.26.0",
     "webpack-cli": "^3.1.2"
   }
