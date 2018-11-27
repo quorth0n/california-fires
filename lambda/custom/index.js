@@ -62,7 +62,7 @@ const CountyFireIntentHandler = {
     const fire = _.find(data, fireData =>
       fireData.title
         .toLowerCase()
-        .includes(handlerInput.requestEnvelope.request.intent.slots.County.value)
+        .includes(handlerInput.requestEnvelope.request.intent.slots.County.value.toLowerCase())
     );
 
     const speechText = !!fire
@@ -189,9 +189,10 @@ const HelpIntentHandler = {
   },
   handle(handlerInput) {
     const speechText =
-      'Try saying "check for fires" to get brief information about all fires,' +
-      '"check for local fires" to get fires close to you, ' +
-      'or "tell me about [fire name]" to get information about a specific fire';
+      'Try saying "get all fires" to get brief information about all fires,\n' +
+      '"is there a fire near me" to get fires close to you,\n' +
+      '"is there a fire in (county name)" to get information about a specific county,\n' +
+      'or "tell me about fire number (index) to get information about a specific fire number [from "get all fires"]';
 
     return handlerInput.responseBuilder
       .speak(speechText)
