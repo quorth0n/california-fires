@@ -5,9 +5,9 @@
         "en-US": {
           "summary": "Alexa skill to tell you about fires in your area",
           "examplePhrases": [
-            "check for fires",
-            "check for local fires",
-            "tell me about [county name]"
+            "is there a fire near me",
+            "get all fires",
+            "is there a fire in [county name]"
           ],
           "name": "California Fires",
           "description": "Alexa skill to tell you about fires in your area "

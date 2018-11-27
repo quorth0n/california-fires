@@ -33,7 +33,8 @@
             "get all fires",
             "check for all fires",
             "get fires in california",
-            "get fires in the state"
+            "get fires in the state",
+            "is california on fire"
           ]
         },
         {
@@ -47,7 +48,8 @@
           "samples": [
             "get fires in {County}",
             "tell me about {County}",
-            "get information about {County}"
+            "get information about {County}",
+            "is there a fire in {County}"
           ]
         },
         {
