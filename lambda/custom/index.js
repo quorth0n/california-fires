@@ -154,6 +154,14 @@ const LocalFiresIntentHandler = {
               ? `${fire.distance} miles away: ${fire.title}: ${fire.content}\n`
               : '';
         });
+
+      const myZipInfo = zipcodes.lookup(myZip);
+
+      speechText = speechText
+        ? `The following fires are within 30 miles of ${myZipInfo.city}, ${
+            myZipInfo.state
+          }: ${speechText}`
+        : `There are no fires within 30 miles of ${myZipInfo.city}, ${myZipInfo.state}.`;
     } catch (err) {
       console.error(err);
       if (err.status === 403) {
@@ -163,11 +171,8 @@ const LocalFiresIntentHandler = {
       }
     }
 
-    speechText = speechText
-      ? `The following fires are within 30 miles of you: ${speechText}`
-      : 'There are no fires within 30 miles of you.';
-
-    speechText += ' Say "get all fires" to return a list of all fires, or "help" for more commands';
+    speechText +=
+      '\n Say "get all fires" to return a list of all fires, or "help" for more commands';
 
     const response = handlerInput.responseBuilder.speak(speechText).reprompt(speechText);
     return needsPerms
