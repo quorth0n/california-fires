@@ -5,15 +5,28 @@
         "en-US": {
           "summary": "Alexa skill to tell you about fires in your area",
           "examplePhrases": [
-            "is there a fire near me",
-            "get all fires",
-            "is there a fire in [county name]"
+            "Alexa, start California Fires.",
+            "Alexa, ask California Fires to get fires in Los Angeles county.",
+            "Alexa, ask California Fires to get all fires."
           ],
+          "keywords": [
+            "fire",
+            "california",
+            "emergency",
+            "evacuate",
+            "county",
+            "local",
+            "alert",
+            "distance"
+          ],
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/1bff/f37df10253d541748ca6978c5f390df6/APP_ICON?versionId=D9EoaLRKPqH7AyX5dXex83bd_bTeBkeI&AWSAccessKeyId=AKIAJFEYRBGIHK2BBYKA&Expires=1543891508&Signature=621g5zrZziSO8nu4SPO3x0ZHnVc%3D",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cb91/feaf1e94f5fd4f2f86259aebbd4943ac/APP_ICON_LARGE?versionId=8ncpvfUJjj.VnFhG7wdkvctNtnc6lo_u&AWSAccessKeyId=AKIAJFEYRBGIHK2BBYKA&Expires=1543891508&Signature=2xMxbj5vFWBQpitXTFL5vHfBWBU%3D",
           "name": "California Fires",
           "description": "Alexa skill to tell you about fires in your area "
         }
       },
       "isAvailableWorldwide": false,
+      "testingInstructions": "\"Alexa help\" to get a list of commands. Invoking the skill (\"Alexa start california fires\") should ask for the location permission if it has not already been granted.",
       "category": "WEATHER",
       "distributionCountries": ["US"]
     },
@@ -29,6 +42,19 @@
       {
         "name": "alexa:devices:all:address:country_and_postal_code:read"
       }
-    ]
+    ],
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "locales": {
+        "en-US": {
+          "termsOfUseUrl": "https://www.freeprivacypolicy.com/privacy/view/0232156c5e8de2bf97db252678ebcc4d",
+          "privacyPolicyUrl": "https://www.freeprivacypolicy.com/privacy/view/0232156c5e8de2bf97db252678ebcc4d"
+        }
+      },
+      "isExportCompliant": true,
+      "containsAds": false,
+      "isChildDirected": false,
+      "usesPersonalInfo": false
+    }
   }
 }

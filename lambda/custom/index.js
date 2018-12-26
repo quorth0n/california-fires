@@ -27,7 +27,7 @@ const getFireData = new Promise((resolve, reject) => {
   });
 });
 
-const LaunchRequestHandler = {
+const AllFiresIntentHandler = {
   canHandle(handlerInput) {
     return (
       handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
@@ -44,7 +44,6 @@ const LaunchRequestHandler = {
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .reprompt(speechText)
       .withSimpleCard('California Fires', speechText)
       .getResponse();
   }
@@ -71,7 +70,6 @@ const CountyFireIntentHandler = {
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .reprompt(speechText)
       .withSimpleCard('California Fires', speechText)
       .getResponse();
   }
@@ -89,16 +87,15 @@ const IndexFireIntentHandler = {
     const fire = data[handlerInput.requestEnvelope.request.intent.slots.Index.value - 1];
 
     const speechText = !!fire
-      ? `Fire #${handlerInput.requestEnvelope.request.intent.slots.Index.value}: ${
+      ? `Fire number ${handlerInput.requestEnvelope.request.intent.slots.Index.value}: ${
           fire.title
-        }: ${fire.content.replace(/(\r\n|\n|\r)/gm, ' ')}`
+        }. ${fire.content}`
       : `Fire number ${
           handlerInput.requestEnvelope.request.intent.slots.Index.value
         } does not exist`;
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .reprompt(speechText)
       .withSimpleCard('California Fires', speechText)
       .getResponse();
   }
@@ -107,9 +104,8 @@ const IndexFireIntentHandler = {
 const LocalFiresIntentHandler = {
   canHandle(handlerInput) {
     return (
-      handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
-      (handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-        handlerInput.requestEnvelope.request.intent.name === 'LocalFiresIntent')
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'LocalFiresIntent'
     );
   },
   async handle(handlerInput) {
@@ -171,10 +167,7 @@ const LocalFiresIntentHandler = {
       }
     }
 
-    speechText +=
-      '\n Say "get all fires" to return a list of all fires, or "help" for more commands';
-
-    const response = handlerInput.responseBuilder.speak(speechText).reprompt(speechText);
+    const response = handlerInput.responseBuilder.speak(speechText);
     return needsPerms
       ? response
           .withAskForPermissionsConsentCard([
@@ -188,8 +181,9 @@ const LocalFiresIntentHandler = {
 const HelpIntentHandler = {
   canHandle(handlerInput) {
     return (
-      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-      handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent'
+      handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
+      (handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+        handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent')
     );
   },
   handle(handlerInput) {
@@ -254,7 +248,7 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 
 exports.handler = skillBuilder
   .addRequestHandlers(
-    LaunchRequestHandler,
+    AllFiresIntentHandler,
     CountyFireIntentHandler,
     IndexFireIntentHandler,
     LocalFiresIntentHandler,

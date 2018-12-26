@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "check for fires",
+      "invocationName": "california fires",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
